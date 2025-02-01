@@ -21,7 +21,14 @@ with open("q-vercel-python.json", "r") as file:
 @app.route('/api', methods = ['GET'])
 def Marks():
     names = request.args.getlist("name")  # Get multiple "name" values from query params
-    marks_list = [student["marks"] for student in data if student["name"] in names]
+    print(names)
+    marks_list = []
+    for student in data:
+        for name in names:
+            if(student['name'] == name):
+                marks_list.append(student['marks'])
+    print(marks_list)
+    # marks_list = [student["marks"] for student in data if student["name"] in names]
 
     return jsonify({"marks": marks_list})
 
