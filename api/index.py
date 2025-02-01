@@ -22,16 +22,16 @@ with open("q-vercel-python.json", "r") as file:
 def Marks():
     names = request.args.getlist("name")  # Get multiple "name" values from query params
     print(names)
-    marks_list = []
-    for student in data:
-        for name in names:
-            if(student['name'] == name):
-                marks_list.append(student['marks'])
-    print(marks_list)
-    # marks_list = [student["marks"] for student in data if student["name"] in names]
-
+    
+    # Create an ordered dictionary to maintain the correct order of marks
+    marks_dict = {student['name']: student['marks'] for student in data}
+    
+    # Collect the marks in the order of the requested names
+    marks_list = [marks_dict.get(name, None) for name in names]  # Get marks in requested order
+    
+    print(marks_list)  # For debugging purposes
+    
     return jsonify({"marks": marks_list})
-
 
 if __name__ == "__main__":
     app.run(debug=True)
